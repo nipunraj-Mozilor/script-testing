@@ -11,6 +11,10 @@
       rel="stylesheet"
       type="text/css"
     />
+    <script
+      type="text/javascript"
+      src="node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+    ></script>
   </head>
   <style>
     /* Add some basic styling for demonstration purposes */
@@ -70,15 +74,17 @@
       <h2>Welcome to our Sample Website</h2>
       <p>This is a simple example of an HTML website.</p>
     </div>
-    <div id="example"></div>
-
-    <script
-      type="text/javascript"
-      src="node_modules/froala-editor/js/froala_editor.pkgd.min.js"
-    ></script>
-    <script>
-      var editor = new FroalaEditor("#example");
-    </script>
+    <form>
+      <p>My Froala Editor: The Best WYSIWYG HTML Editor</p>
+      <div id="froala"></div>
+      <script
+        type="text/javascript"
+        src="node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+      ></script>
+      <script>
+        var editor = new FroalaEditor("#froala");
+      </script>
+    </form>
     <footer>&copy; 2023 Sample Website. All rights reserved.</footer>
   </body>
 </html>
