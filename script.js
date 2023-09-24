@@ -1,18 +1,22 @@
-const addButton = document.getElementById("addLinkButton");
-const linkContainer = document.getElementById("linkContainer");
+document.getElementById("showVideo").addEventListener("click", function () {
+  var videoPopup = document.getElementById("videoPopup");
+  var youtubeIframe = document.getElementById("youtubeIframe");
 
-function appendYouTubeLink() {
-  const link = prompt("https://youtu.be/scAibuB65TA?si=ARfoDSBZ_6tKfAcM");
+  // Set the YouTube video URL
+  var videoURL = "https://www.youtube.com/embed/VIDEO_ID";
+  youtubeIframe.src = videoURL;
 
-  if (link) {
-    const iframe = document.createElement("iframe");
-    iframe.src = link;
-    iframe.width = "560";
-    iframe.height = "315";
+  // Show the popup
+  videoPopup.style.display = "block";
+});
 
-    linkContainer.appendChild(iframe);
-  }
-}
+document.getElementById("closePopup").addEventListener("click", function () {
+  var videoPopup = document.getElementById("videoPopup");
+  var youtubeIframe = document.getElementById("youtubeIframe");
 
-// Add a click event listener to the button
-addButton.addEventListener("click", appendYouTubeLink);
+  // Clear the video URL
+  youtubeIframe.src = "";
+
+  // Hide the popup
+  videoPopup.style.display = "none";
+});

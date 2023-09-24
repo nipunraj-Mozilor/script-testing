@@ -25,9 +25,18 @@
     <div class="container">
       <h2>Welcome to our Sample Website</h2>
       <p>This is a simple example of an HTML website.</p>
-      <button id="addLinkButton">Add YouTube Link</button>
-      <div id="linkContainer"></div>
+      <button id="showVideo">Show Video</button>
+      <div class="popup" id="videoPopup">
+        <span class="close" id="closePopup">&times;</span>
+        <iframe
+          id="youtubeIframe"
+          width="560"
+          height="315"
+          src=""
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
-    <footer>&copy; 2023 Sample Website. All rights reserved.</footer>
   </body>
 </html>
