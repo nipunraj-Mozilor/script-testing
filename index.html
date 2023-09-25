@@ -8,27 +8,26 @@
       src="https://cdn-cookieyes.com/client_data/6b0c41814a684487155473aa/script.js"
     ></script>
     <!-- End cookieyes banner -->
-    <!-- custom code -->
 
     <!-- custom script 2 -->
     <script>
       function lazyLoadThumb(videoID, altText) {
         var thumbnail =
-          '<img src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360">';
-        thumbnail = thumbnail.replace('alt=""', 'alt="' + altText + '"');
+          '<img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="' +
+          altText +
+          '" width="480" height="360">';
         return thumbnail;
       }
 
       function lazyLoadYoutubeIframe() {
-        var iframe = document.createElement("iframe");
         var videoID = this.parentNode.dataset.id;
         var query = this.parentNode.dataset.query;
-        var src = this.parentNode.dataset.src;
 
         var autoplayParam = query.length === 0 ? "?autoplay=1" : "&autoplay=1";
         var videoURL =
           "https://www.youtube.com/embed/" + videoID + autoplayParam;
 
+        var iframe = document.createElement("iframe");
         iframe.setAttribute("src", videoURL);
         iframe.setAttribute("frameborder", "0");
         iframe.setAttribute("allowfullscreen", "1");
@@ -36,8 +35,11 @@
           "allow",
           "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         );
+        iframe.width = "560";
+        iframe.height = "315";
 
-        this.parentNode.parentNode.replaceChild(iframe, this.parentNode);
+        this.parentNode.innerHTML = ""; // Clear the placeholder
+        this.parentNode.appendChild(iframe);
       }
 
       document.addEventListener("DOMContentLoaded", function () {
@@ -46,17 +48,17 @@
 
         for (var i = 0; i < youtubePlayers.length; i++) {
           var div = document.createElement("div");
-          div.setAttribute("data-id", youtubePlayers[i].dataset.id);
-          div.setAttribute("data-query", youtubePlayers[i].dataset.query);
-          div.setAttribute("data-src", youtubePlayers[i].dataset.src);
           div.innerHTML = lazyLoadThumb(
             youtubePlayers[i].dataset.id,
             youtubePlayers[i].dataset.alt
           );
           youtubePlayers[i].appendChild(div);
 
-          var playButton = div.querySelector(".play");
+          var playButton = document.createElement("button");
+          playButton.className = "play";
+          playButton.setAttribute("aria-label", "play Youtube video");
           playButton.onclick = lazyLoadYoutubeIframe;
+          div.appendChild(playButton);
         }
       });
     </script>
