@@ -51,43 +51,52 @@
     <!--  -->
     <!-- custom script 2 -->
     <script>
-      function lazyLoadThumb(e, alt) {
-        var t =
-            '<img src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360">',
-          a = '<button class="play" aria-label="play Youtube video"></button>';
-        t = t.replace('alt=""', 'alt="' + alt + '"');
-        return t.replace("ID", e) + a;
+      function lazyLoadThumb(videoID, altText) {
+        var thumbnail =
+          '<img src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360">';
+        thumbnail = thumbnail.replace('alt=""', 'alt="' + altText + '"');
+        return thumbnail;
       }
+
       function lazyLoadYoutubeIframe() {
-        var e = document.createElement("iframe"),
-          t = "ID?autoplay=1";
-        t +=
-          0 === this.parentNode.dataset.query.length
-            ? ""
-            : "&" + this.parentNode.dataset.query;
-        e.setAttribute("src", t.replace("ID", this.parentNode.dataset.src)),
-          e.setAttribute("frameborder", "0"),
-          e.setAttribute("allowfullscreen", "1"),
-          e.setAttribute(
-            "allow",
-            "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          ),
-          this.parentNode.parentNode.replaceChild(e, this.parentNode);
+        var iframe = document.createElement("iframe");
+        var videoID = this.parentNode.dataset.id;
+        var query = this.parentNode.dataset.query;
+        var src = this.parentNode.dataset.src;
+
+        var autoplayParam = query.length === 0 ? "?autoplay=1" : "&autoplay=1";
+        var videoURL =
+          "https://www.youtube.com/embed/" + videoID + autoplayParam;
+
+        iframe.setAttribute("src", videoURL);
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "1");
+        iframe.setAttribute(
+          "allow",
+          "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        );
+
+        this.parentNode.parentNode.replaceChild(iframe, this.parentNode);
       }
+
       document.addEventListener("DOMContentLoaded", function () {
-        var e,
-          t,
-          p,
-          a = document.getElementsByClassName("rll-youtube-player");
-        for (t = 0; t < a.length; t++)
-          (e = document.createElement("div")),
-            e.setAttribute("data-id", a[t].dataset.id),
-            e.setAttribute("data-query", a[t].dataset.query),
-            e.setAttribute("data-src", a[t].dataset.src),
-            (e.innerHTML = lazyLoadThumb(a[t].dataset.id, a[t].dataset.alt)),
-            a[t].appendChild(e),
-            (p = e.querySelector(".play")),
-            (p.onclick = lazyLoadYoutubeIframe);
+        var youtubePlayers =
+          document.getElementsByClassName("rll-youtube-player");
+
+        for (var i = 0; i < youtubePlayers.length; i++) {
+          var div = document.createElement("div");
+          div.setAttribute("data-id", youtubePlayers[i].dataset.id);
+          div.setAttribute("data-query", youtubePlayers[i].dataset.query);
+          div.setAttribute("data-src", youtubePlayers[i].dataset.src);
+          div.innerHTML = lazyLoadThumb(
+            youtubePlayers[i].dataset.id,
+            youtubePlayers[i].dataset.alt
+          );
+          youtubePlayers[i].appendChild(div);
+
+          var playButton = div.querySelector(".play");
+          playButton.onclick = lazyLoadYoutubeIframe;
+        }
       });
     </script>
     <!-- custom script 2 end -->
