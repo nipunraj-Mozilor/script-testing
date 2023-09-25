@@ -9,46 +9,7 @@
     ></script>
     <!-- End cookieyes banner -->
     <!-- custom code -->
-    <!-- <script>
-      var checktimeout = 0;
-      window.addEventListener("DOMContentLoaded", function () {
-        waitForElement(".video-stream", function () {
 
-        });
-      });
-      function waitForElement(selector, callback) {
-        var element = document.querySelector(selector);
-        if (element) return callback();
-        checktimeout++;
-        if (checktimeout < 120) {
-          setTimeout(function () {
-            waitForElement(selector, callback);
-          }, 500);
-        }
-      }
-      function createPlaceholder() {
-        const divElement = document.createElement("div");
-        divElement.setAttribute("class", "video-placeholder-youtube");
-        divElement.setAttribute("data-cky-tag", "video-placeholder");
-        //add the corresponding height and background-image for the video they want to place the placeholder
-        divElement.setAttribute(
-          "style",
-          "height: 488px; background-image: linear-gradient(rgba(76, 72, 72, 0.7), rgba(76, 72, 72, 0.7)), url(https://img.youtube.com/vi/vBpQ1SlfVtU/maxresdefault.jpg);"
-        );
-        var paragraph = document.createElement("p");
-        paragraph.setAttribute("class", "video-placeholder-text-youtube");
-        paragraph.setAttribute("data-cky-tag", "placeholder-title");
-        paragraph.setAttribute(
-          "style",
-          "display: block; border-color: rgb(0, 0, 0); background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);"
-        );
-        paragraph.textContent = "Please accept cookies to access this content";
-        divElement.appendChild(paragraph);
-
-        return divElement;
-      }
-    </script> -->
-    <!--  -->
     <!-- custom script 2 -->
     <script>
       function lazyLoadThumb(videoID, altText) {
