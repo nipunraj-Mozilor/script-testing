@@ -9,23 +9,11 @@
     ></script>
     <!-- End cookieyes banner -->
     <!-- custom code -->
-    <script>
+    <!-- <script>
       var checktimeout = 0;
       window.addEventListener("DOMContentLoaded", function () {
-        waitForElement(".elementkit-tab-nav", function () {
-          const ele = document.querySelectorAll(".elementkit-nav-item");
-          // Add the event listener to each selected element
-          ele.forEach(function (element) {
-            let placeholderAppended = false;
-            console.log(element);
-            element.addEventListener("click", function (e) {
-              if (!placeholderAppended) {
-                const placeholder = createPlaceholder();
-                element.appendChild(placeholder);
-                placeholderAppended = true;
-              }
-            });
-          });
+        waitForElement(".video-stream", function () {
+
         });
       });
       function waitForElement(selector, callback) {
@@ -59,8 +47,50 @@
 
         return divElement;
       }
-    </script>
+    </script> -->
     <!--  -->
+    <!-- custom script 2 -->
+    <script>
+      function lazyLoadThumb(e, alt) {
+        var t =
+            '<img src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360">',
+          a = '<button class="play" aria-label="play Youtube video"></button>';
+        t = t.replace('alt=""', 'alt="' + alt + '"');
+        return t.replace("ID", e) + a;
+      }
+      function lazyLoadYoutubeIframe() {
+        var e = document.createElement("iframe"),
+          t = "ID?autoplay=1";
+        t +=
+          0 === this.parentNode.dataset.query.length
+            ? ""
+            : "&" + this.parentNode.dataset.query;
+        e.setAttribute("src", t.replace("ID", this.parentNode.dataset.src)),
+          e.setAttribute("frameborder", "0"),
+          e.setAttribute("allowfullscreen", "1"),
+          e.setAttribute(
+            "allow",
+            "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          ),
+          this.parentNode.parentNode.replaceChild(e, this.parentNode);
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var e,
+          t,
+          p,
+          a = document.getElementsByClassName("rll-youtube-player");
+        for (t = 0; t < a.length; t++)
+          (e = document.createElement("div")),
+            e.setAttribute("data-id", a[t].dataset.id),
+            e.setAttribute("data-query", a[t].dataset.query),
+            e.setAttribute("data-src", a[t].dataset.src),
+            (e.innerHTML = lazyLoadThumb(a[t].dataset.id, a[t].dataset.alt)),
+            a[t].appendChild(e),
+            (p = e.querySelector(".play")),
+            (p.onclick = lazyLoadYoutubeIframe);
+      });
+    </script>
+    <!-- custom script 2 end -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
