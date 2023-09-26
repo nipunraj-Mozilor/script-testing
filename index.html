@@ -8,59 +8,96 @@
       src="https://cdn-cookieyes.com/client_data/6b0c41814a684487155473aa/script.js"
     ></script>
     <!-- End cookieyes banner -->
-
     <!-- custom script 2 -->
     <script>
-      function lazyLoadThumb(videoID, altText) {
-        var thumbnail =
-          '<img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="' +
-          altText +
-          '" width="480" height="360">';
-        return thumbnail;
-      }
-
-      function lazyLoadYoutubeIframe() {
-        var videoID = this.parentNode.dataset.id;
-        var query = this.parentNode.dataset.query;
-
-        var autoplayParam = query.length === 0 ? "?autoplay=1" : "&autoplay=1";
-        var videoURL =
-          "https://www.youtube.com/embed/" + videoID + autoplayParam;
-
-        var iframe = document.createElement("iframe");
-        iframe.setAttribute("src", videoURL);
-        iframe.setAttribute("frameborder", "0");
-        iframe.setAttribute("allowfullscreen", "1");
-        iframe.setAttribute(
-          "allow",
-          "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      let cookies = document.cookie
+        .split(";")
+        .reduce(
+          (ac, cv, i) =>
+            Object.assign(ac, { [cv.split("=")[0]]: cv.split("=")[1] }),
+          {}
         );
-        iframe.width = "560";
-        iframe.height = "315";
-
-        this.parentNode.innerHTML = ""; // Clear the placeholder
-        this.parentNode.appendChild(iframe);
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        var youtubePlayers =
-          document.getElementsByClassName("rll-youtube-player");
-
-        for (var i = 0; i < youtubePlayers.length; i++) {
-          var div = document.createElement("div");
-          div.innerHTML = lazyLoadThumb(
-            youtubePlayers[i].dataset.id,
-            youtubePlayers[i].dataset.alt
-          );
-          youtubePlayers[i].appendChild(div);
-
-          var playButton = document.createElement("button");
-          playButton.className = "play";
-          playButton.setAttribute("aria-label", "play Youtube video");
-          playButton.onclick = lazyLoadYoutubeIframe;
-          div.appendChild(playButton);
+      console.log(cookies);
+      const cookieYesConsent = cookies["cookieyes-consent"];
+      let adsConsent = false;
+      if (cookieYesConsent) {
+        console.log("cookieYesConsent");
+        const cookiePairs = cookieYesConsent
+          .split(",")
+          .map((pair) => pair.trim());
+        const cookieObj = {};
+        cookiePairs.forEach((pair) => {
+          const [key, value] = pair.split(":");
+          cookieObj[key] = value;
+        });
+        if (cookieObj.advertisement === "yes") {
+          adsConsent = true;
         }
-      });
+      }
+      if (!adsConsent) {
+        document.addEventListener("DOMContentLoaded", function () {
+          addPlaceholder();
+        });
+      } else {
+        removePlaceholder();
+      }
+      document.addEventListener(
+        "cookieyes_consent_update",
+        function (eventData) {
+          const data = eventData.detail;
+          if (!data.accepted.includes("advertisement")) {
+            document.addEventListener("DOMContentLoaded", function () {
+              addPlaceholder();
+            });
+          } else {
+            removePlaceholder();
+          }
+        }
+      );
+
+      function addPlaceholder() {
+        const divElement = document.createElement("div");
+        divElement.setAttribute("class", "video-placeholder-youtube");
+        divElement.setAttribute("data-cky-tag", "video-placeholder");
+        //add the corresponding height and background-image for the video they want to place the placeholder
+        divElement.setAttribute(
+          "style",
+          "height: 488px; background-image: linear-gradient(rgba(76, 72, 72, 0.7), rgba(76, 72, 72, 0.7)), url(https://i.vimeocdn.com/video/1380356119-25aba1f…-d?mw=1800&mh=1013&q=70);"
+        );
+        const paragraph = document.createElement("p");
+        paragraph.setAttribute("class", "video-placeholder-text-youtube");
+        paragraph.setAttribute("data-cky-tag", "placeholder-title");
+        paragraph.setAttribute(
+          "style",
+          "display: block; border-color: rgb(0, 0, 0); background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);"
+        );
+        paragraph.textContent = "Please accept cookies to access this content";
+        divElement.appendChild(paragraph);
+
+        const elements = document.querySelectorAll(".minimodal");
+
+        // elements.forEach(function (element) {
+        //   const embedResponsiveElement =
+        //     element.querySelector(".embed-responsive");
+        //   if (embedResponsiveElement) {
+        //     embedResponsiveElement.appendChild(divElement.cloneNode(true));
+        //   }
+        // });
+      }
+      function removePlaceholder() {
+        const elements = document.querySelectorAll(".tab-pane");
+        elements.forEach(function (element) {
+          const embedResponsive = element.querySelector(".embed-responsive");
+          if (embedResponsive) {
+            const divElementToRemove = embedResponsive.querySelector(
+              ".video-placeholder-youtube"
+            );
+            if (divElementToRemove) {
+              embedResponsive.removeChild(divElementToRemove);
+            }
+          }
+        });
+      }
     </script>
     <!-- custom script 2 end -->
     <meta charset="utf-8" />
@@ -69,7 +106,7 @@
       content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
     />
     <link rel="stylesheet" href="./style.css" />
-    <script defer src="./script.js"></script>
+    <script defer src="./script2.js"></script>
   </head>
 
   <body>
@@ -84,23 +121,11 @@
         <li><a href="#">Contact</a></li>
       </ul>
     </nav>
-    <div class="container">
+    <main>
       <h2>Welcome to our Sample Website</h2>
       <p>This is a simple example of an HTML website.</p>
-      <button id="showVideo">Show Video</button>
-      <div class="modal" id="videoModal">
-        <div class="modal-content">
-          <span class="close" id="closeModal">&times;</span>
-          <iframe
-            id="youtubeIframe"
-            width="560"
-            height="315"
-            src=""
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
-    </div>
+      <button id="openVideo">Open Video</button>
+      <div id="videoContainer"></div>
+    </main>
   </body>
 </html>

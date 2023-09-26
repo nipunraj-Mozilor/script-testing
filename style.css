@@ -37,3 +37,31 @@ footer {
   text-align: center;
   padding: 10px 0;
 }
+
+#videoContainer {
+  display: none;
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center both horizontally and vertically */
+  width: 80%; /* Adjust the width as needed */
+  max-width: 800px; /* Set a maximum width */
+  height: auto; /* Maintain aspect ratio */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  padding: 20px; /* Add padding for better aesthetics */
+  box-sizing: border-box;
+}
+
+/* Style the close button if needed */
+#videoContainer .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+}
